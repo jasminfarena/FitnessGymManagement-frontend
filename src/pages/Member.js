@@ -58,6 +58,29 @@ export default function MemberFormPage() {
    
   }, [id]);
 
+  const handleDelete = async () => {
+    try {
+        await api.delete(`/members/${id}`, formData);
+        toast({
+          title: "Member deleted.",
+          description: "Member details have been deleted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        navigate("/dashboard");
+    }catch(err) {
+        console.error(err);
+        toast({
+        title: "Error",
+        description: err.response?.data?.message || "Operation failed.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        });
+    }
+  }
+
 
   const handleSubmit = async () => {
     try {
@@ -251,6 +274,9 @@ export default function MemberFormPage() {
                 <Button colorScheme="blue" onClick={handleSubmit}>
                 {isEdit ? "Update Member" : "Register Member"}
                 </Button>
+                <Button colorScheme="red" onClick={handleDelete}>
+                Delete Member
+                </Button>
                 <Button variant="outline" onClick={() => navigate("/dashboard")}>
                 Cancel
                 </Button>
@@ -260,3 +286,4 @@ export default function MemberFormPage() {
     );
 
 }
+
